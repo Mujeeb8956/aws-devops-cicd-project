@@ -25,8 +25,9 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQube') {
                     sh '''
-                mvn org.sonarsource.scanner.maven:sonar-maven-plugin:5.2.0.4988:sonar
-            '''                }
+                        mvn org.sonarsource.scanner.maven:sonar-maven-plugin:5.2.0.4988:sonar
+                    '''
+                }
             }
         }
 
@@ -35,6 +36,28 @@ pipeline {
                 timeout(time: 5, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh '''
+                    docker build \
+                      -t aws-devops-cicd-project:${BUILD_NUMBER} .
+                '''
+            }
+        }
+
+        stage('Trivy Security Scan') {
+            steps {
+                sh '''
+                    TMPDIR=/var/tmp/trivy-tmp trivy \
+                      --cache-dir /var/cache/trivy \
+                      image \
+                      --severity HIGH,CRITICAL \
+                      --exit-code 1 \
+                      aws-devops-cicd-project:${BUILD_NUMBER}
+                '''
             }
         }
     }
