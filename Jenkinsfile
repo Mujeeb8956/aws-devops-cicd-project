@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -60,6 +59,33 @@ pipeline {
                 '''
             }
         }
+
+
+        stage('ECR Login') {
+            steps {
+                sh '''
+                    aws ecr get-login-password \
+                      --region ap-southeast-2 | \
+                    docker login \
+                      --username AWS \
+                      --password-stdin \
+                      362457597883.dkr.ecr.ap-southeast-2.amazonaws.com
+                '''
+            }
+        }
+
+        stage('Docker Push to ECR') {
+            steps {
+                sh '''
+                    docker tag \
+                      aws-devops-cicd-project:${BUILD_NUMBER} \
+                      362457597883.dkr.ecr.ap-southeast-2.amazonaws.com/aws-devops-cicd-project:${BUILD_NUMBER}
+
+                    docker push \
+                      362457597883.dkr.ecr.ap-southeast-2.amazonaws.com/aws-devops-cicd-project:${BUILD_NUMBER}
+                '''
+            }
+        }
+
     }
 }
-
