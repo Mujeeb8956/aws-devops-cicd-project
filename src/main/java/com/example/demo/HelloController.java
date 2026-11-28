@@ -12,9 +12,10 @@ public class HelloController {
     @GetMapping("/")
     public Map<String, String> home() {
         return Map.of(
-            "application", "AWS DevOps CI/CD Demo",
-            "message", "Hello! Your Java application is running.",
-            "next_step", "We will automate build and deployment using Jenkins."
+            "application", "RS Enterprise",
+            "message", "Hello RS Enterprise!",
+            "greeting", "Hello Ragini Ma'am",
+            "environment", "AWS DevOps CI/CD Environment"
         );
     }
 
@@ -25,19 +26,18 @@ public class HelloController {
             "message", "Application is healthy"
         );
     }
-      @GetMapping("/api/hello")
-      public Map<String, String> hello() {
 
+    @GetMapping("/api/hello")
+    public Map<String, String> hello() {
         return Map.of(
-            "message",
-            "Hello from the AWS CI/CD project!"
+            "message", "Hello RS Enterprise and Ragini Maal!"
         );
     }
 
     @GetMapping("/api/info")
     public Map<String, String> info() {
         return Map.of(
-            "project", "AWS DevOps CI/CD",
+            "project", "RS Enterprise AWS DevOps CI/CD",
             "version", "1.0.0",
             "environment", "development"
         );

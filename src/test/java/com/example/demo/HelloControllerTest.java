@@ -31,6 +31,7 @@ class HelloControllerTest {
         mockMvc.perform(get("/api/hello"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message")
-                        .value("Hello from the AWS CI/CD project!"));
+                        .value("Hello RS Enterprise and Ragini Maal!")); 
     }
+
 }
